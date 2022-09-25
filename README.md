@@ -1,13 +1,13 @@
-# Senf - TypeScript-first env configuration
+# Zusammen - TypeScript-first env configuration
 
-Senf is a TypeScript-first module that combines the convenience of environment variables with the confidence of file based configs.
+Zusammen is a TypeScript-first module that combines the convenience of environment variables with the confidence of file based configs.
 
 Never worry about missing environment variables or accidental typos in `process.env[...]` calls ever again.
 
 ## Install
 ```bash
 # install locally (recommended)
-npm install senf --save
+npm install zusammen --save
 ```
 
 ## Usage
@@ -16,9 +16,9 @@ Create a config file somewhere in your project that contains the desired schema:
 
 ```typescript
 // src/config.ts
-import senf from "senf";
+import zusammen from "zusammen";
 
-const schema: senf.Config = {
+const schema: zusammen.Config = {
   hello: {
     type: "string",
     default: "my-default"
@@ -30,7 +30,7 @@ const schema: senf.Config = {
   }
 };
 
-const config = senf.config(schema);
+const config = zusammen.config(schema);
 
 export default config;
 ```
