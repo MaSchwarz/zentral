@@ -21,10 +21,6 @@ export type Environment<T extends Config> = {
     T[Key] extends Config ? Environment<T[Key]> : never
 };
 
-export type ErrorKind = "";
-export type Error = { kind: ErrorKind, message?: string };
-export type Result<T> = ({ success: true, data: T } | { success: false, errors: Error[] });
-
 function parseString(value?: unknown): string | undefined {
   if (typeof value === "string") {
     return value.trim();
