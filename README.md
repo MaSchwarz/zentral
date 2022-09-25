@@ -1,13 +1,13 @@
-# Zusammen - TypeScript-first env configuration
+# Zentral - TypeScript-first env configuration
 
-Zusammen is a TypeScript-first module that combines the convenience of environment variables with the confidence of file based configs.
+Zentral is a TypeScript-first module that combines the convenience of environment variables with the confidence of file based configs.
 
 Never worry about missing environment variables or accidental typos in `process.env[...]` calls ever again.
 
 ## Install
 ```bash
 # install locally (recommended)
-npm install zusammen --save
+npm install zentral --save
 ```
 
 ## Usage
@@ -16,9 +16,9 @@ Create a config file somewhere in your project that contains the desired schema:
 
 ```typescript
 // src/config.ts
-import zusammen from "zusammen";
+import zentral from "zentral";
 
-const schema: zusammen.Config = {
+const config = zentral.config({
   hello: {
     type: "string",
     default: "my-default"
@@ -28,9 +28,7 @@ const schema: zusammen.Config = {
       type: "number"
     }
   }
-};
-
-const config = zusammen.config(schema);
+});
 
 export default config;
 ```

@@ -11,14 +11,14 @@ export type Property<T extends PropertyType> = {
   default?: T,
 };
 
-export type Config = {
-  [key: string]: Property<PropertyType> | Config
+export type Schema = {
+  [key: string]: Property<PropertyType> | Schema
 };
 
-export type Environment<T extends Config> = {
+export type Config<T extends Schema> = {
   [Key in keyof T]:
     T[Key] extends Property<PropertyType> ? Required<T[Key]["default"]> :
-    T[Key] extends Config ? Environment<T[Key]> : never
+    T[Key] extends Schema ? Config<T[Key]> : never
 };
 
 function parseString(value?: unknown): string | undefined {
@@ -91,28 +91,28 @@ function getValue<T extends Property<PropertyType>>(property: T, path: string): 
   throw new Error(`Failed to read '${variable}'. Make sure the variable exists and can be parsed to a ${property.type}`);
 }
 
-function resolveLayer<T extends Config>(config: T, path?: string): Environment<T>;
-function resolveLayer<T extends Config>(config: T, path?: string): any {
+function resolveLayer<T extends Schema>(schema: T, path?: string): Config<T>;
+function resolveLayer<T extends Schema>(schema: T, path?: string): any {
   const temp: any = { }
 
-  for (const key in config) {
+  for (const key in schema) {
     const updatedPath = (path || "") + ((path?.length || 0) <= 0 ? "" : ".") + key;
 
-    if (config[key]["type"]) {
-      temp[key] = getValue(config[key] as any, updatedPath);
+    if (schema[key]["type"]) {
+      temp[key] = getValue(schema[key] as any, updatedPath);
     } else {
-      temp[key] = resolveLayer(config[key] as any, updatedPath);
+      temp[key] = resolveLayer(schema[key] as any, updatedPath);
     }
   }
 
   return temp;
 }
 
-function config<T extends Config>(config: T): Environment<T>;
-function config<T extends Config>(config: T): any {
-  return resolveLayer(config);
+function schema<T extends Schema>(schema: T): Config<T>;
+function schema<T extends Schema>(schema: T): any {
+  return resolveLayer(schema);
 }
 
 export default {
-  config,
+  schema,
 };
